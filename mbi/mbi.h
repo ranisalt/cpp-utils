@@ -25,7 +25,15 @@ public:
 
     friend bool operator<(const BigInteger& lhs, const BigInteger& rhs);
 
+    friend bool operator>(const BigInteger& lhs, const BigInteger& rhs);
+
+    friend bool operator<=(const BigInteger& lhs, const BigInteger& rhs);
+
+    friend bool operator>=(const BigInteger& lhs, const BigInteger& rhs);
+
     // arithmetic
+    friend BigInteger operator-(BigInteger that);
+
     friend BigInteger operator+(BigInteger lhs, const BigInteger& rhs);
 
     BigInteger& operator+=(const BigInteger& rhs);
@@ -57,6 +65,21 @@ public:
 
     // logical
     bool operator!() const;
+
+    // bitwise
+    friend BigInteger operator&(BigInteger lhs, const BigInteger& rhs);
+
+    BigInteger& operator&=(const BigInteger& rhs);
+
+    friend BigInteger operator|(BigInteger lhs, const BigInteger& rhs);
+
+    BigInteger& operator|=(const BigInteger& rhs);
+
+    friend BigInteger operator^(BigInteger lhs, const BigInteger& rhs);
+
+    BigInteger& operator^=(const BigInteger& rhs);
+
+    friend BigInteger operator~(BigInteger lhs);
 
     // conversion
     explicit operator std::string() const;

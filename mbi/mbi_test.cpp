@@ -17,15 +17,54 @@ TEST_F(mbi_test, isDefaultConstructedToZero) {
 TEST_F(mbi_test, equal) {
     auto twenty = BigInteger{20};
     auto other_twenty = BigInteger{20};
+    auto twenty_one = BigInteger{21};
 
-    EXPECT_EQ(twenty, other_twenty);
+    EXPECT_TRUE(twenty == other_twenty);
+    EXPECT_FALSE(twenty == twenty_one);
 }
 
 TEST_F(mbi_test, different) {
     auto twenty = BigInteger{20};
+    auto other_twenty = BigInteger{20};
     auto not_twenty = BigInteger{21};
 
-    EXPECT_NE(twenty, not_twenty);
+    EXPECT_FALSE(twenty != other_twenty);
+    EXPECT_TRUE(twenty != not_twenty);
+}
+
+TEST_F(mbi_test, greaterThan) {
+    auto twenty = BigInteger{20};
+    auto twenty_one = BigInteger{21};
+
+    EXPECT_TRUE(twenty_one > twenty);
+}
+
+TEST_F(mbi_test, lessThan) {
+    auto twenty = BigInteger{20};
+    auto twenty_one = BigInteger{21};
+
+    EXPECT_TRUE(twenty < twenty_one);
+}
+
+TEST_F(mbi_test, greaterThanOrEqual) {
+    auto twenty = BigInteger{20};
+    auto twenty_one = BigInteger{21};
+
+    EXPECT_TRUE(twenty_one >= twenty);
+}
+
+TEST_F(mbi_test, lessThanOrEqual) {
+    auto twenty = BigInteger{20};
+    auto twenty_one = BigInteger{21};
+
+    EXPECT_TRUE(twenty <= twenty_one);
+}
+
+TEST_F(mbi_test, negate) {
+    auto twenty = BigInteger{20};
+    auto minus_twenty = BigInteger{-20};
+
+    EXPECT_EQ(minus_twenty, -twenty);
 }
 
 TEST_F(mbi_test, addition) {
@@ -100,6 +139,37 @@ TEST_F(mbi_test, booleanCast) {
 
     EXPECT_FALSE(!twenty);
     EXPECT_TRUE(!zero);
+}
+
+TEST_F(mbi_test, bitAnd) {
+    auto twenty_one = BigInteger{21}; // 10101
+    auto twenty_two = BigInteger{22}; // 10110
+    auto twenty = BigInteger{20};     // 10100
+
+    EXPECT_EQ(twenty, twenty_one & twenty_two);
+}
+
+TEST_F(mbi_test, bitOr) {
+    auto twenty_one = BigInteger{21};   // 10101
+    auto twenty_two = BigInteger{22};   // 10110
+    auto twenty_three = BigInteger{23}; // 10111
+
+    EXPECT_EQ(twenty_three, twenty_one | twenty_two);
+}
+
+TEST_F(mbi_test, bitXor) {
+    auto twenty_one = BigInteger{21}; // 10101
+    auto twenty_two = BigInteger{22}; // 10110
+    auto three = BigInteger{3};       // 00011
+
+    EXPECT_EQ(three, twenty_one ^ twenty_two);
+}
+
+TEST_F(mbi_test, bitComplement) {
+    auto twenty = BigInteger{20};            // 10101
+    auto minus_twenty_one = BigInteger{-21}; // 10101
+
+    EXPECT_EQ(minus_twenty_one, ~twenty);
 }
 
 int main(int argc, char** argv) {
