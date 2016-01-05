@@ -1,29 +1,22 @@
-#include <cstdint>
-#include <vector>
-
 #ifndef UTILS_BIGINTEGER_H
 #define UTILS_BIGINTEGER_H
 
+#include <cstdint>
 #include <string>
 
-namespace utils {
+#include <gmp.h>
+
+namespace my {
 
 class BigInteger {
-    // masks
-    const static int64_t lower_mask = 0x00000000FFFFFFFF;
-
-    static inline int32_t get_low(int64_t value);
-
-    static inline int32_t get_high(int64_t value);
-
 public:
 
-    // ctors
-    BigInteger() = default;
+    // ctors and dtor
+    BigInteger(int32_t value = 0);
 
-    BigInteger(int32_t value);
+    BigInteger(const BigInteger& that);
 
-    BigInteger(int64_t value);
+    ~BigInteger();
 
     // comparison
     friend bool operator==(const BigInteger& lhs, const BigInteger& rhs);
@@ -69,8 +62,7 @@ public:
     explicit operator std::string() const;
 
 private:
-    std::vector<int32_t> digits{0,};
-    bool signal{false};
+    mpz_t mpz;
 };
 
 }

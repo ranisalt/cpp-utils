@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "mbi.h"
 
-using utils::BigInteger;
+using my::BigInteger;
 
 class mbi_test : public testing::Test {
 public:
@@ -72,10 +72,11 @@ TEST_F(mbi_test, modulus) {
 
 TEST_F(mbi_test, increment) {
     auto twenty = BigInteger{20};
+    auto other_twenty = twenty;
     auto twenty_one = BigInteger{21};
     auto twenty_two = BigInteger{22};
 
-    EXPECT_EQ(twenty, twenty++);
+    EXPECT_EQ(other_twenty, twenty++);
     EXPECT_EQ(twenty_one, twenty);
     EXPECT_EQ(twenty_two, ++twenty);
     EXPECT_EQ(twenty_two, twenty);
@@ -83,10 +84,11 @@ TEST_F(mbi_test, increment) {
 
 TEST_F(mbi_test, decrement) {
     auto twenty = BigInteger{20};
+    auto other_twenty = twenty;
     auto nineteen = BigInteger{19};
     auto eighteen = BigInteger{18};
 
-    EXPECT_EQ(twenty, twenty--);
+    EXPECT_EQ(other_twenty, twenty--);
     EXPECT_EQ(nineteen, twenty);
     EXPECT_EQ(eighteen, --twenty);
     EXPECT_EQ(eighteen, twenty);
@@ -98,4 +100,9 @@ TEST_F(mbi_test, booleanCast) {
 
     EXPECT_FALSE(!twenty);
     EXPECT_TRUE(!zero);
+}
+
+int main(int argc, char** argv) {
+	testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
 }

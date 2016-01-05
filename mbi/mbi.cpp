@@ -1,35 +1,29 @@
 #include "mbi.h"
 
-namespace utils {
+namespace my {
 
-int32_t BigInteger::get_high(int64_t value)
+BigInteger::BigInteger(int32_t value/* = 0*/)
 {
-    return static_cast<int32_t>(value >> 32);
+    mpz_init_set_si(mpz, value);
 }
 
-int32_t BigInteger::get_low(int64_t value)
+BigInteger::BigInteger(const BigInteger& that)
 {
-    return static_cast<int32_t>(value & lower_mask);
+    mpz_init_set(mpz, that.mpz);
 }
 
-BigInteger::BigInteger(int32_t value) :
-    digits{value,}, signal{value < 0}
-{
-}
-
-BigInteger::BigInteger(int64_t value) :
-    digits{get_low(value), get_high(value)}, signal{value < 0}
-{
+BigInteger::~BigInteger() {
+    mpz_clear(mpz);
 }
 
 bool operator==(const BigInteger& lhs, const BigInteger& rhs)
 {
-    return lhs.digits == rhs.digits;
+    return mpz_cmp(lhs.mpz, rhs.mpz) == 0;
 }
 
 bool operator!=(const BigInteger& lhs, const BigInteger& rhs)
 {
-    return lhs.digits != rhs.digits;
+    return not (lhs == rhs);
 }
 
 BigInteger operator+(BigInteger lhs, const BigInteger& rhs)
@@ -37,9 +31,19 @@ BigInteger operator+(BigInteger lhs, const BigInteger& rhs)
     return lhs += rhs;
 }
 
+BigInteger& BigInteger::operator+=(const BigInteger& rhs) {
+    mpz_add(mpz, mpz, rhs.mpz);
+    return *this;
+}
+
 BigInteger operator-(BigInteger lhs, const BigInteger& rhs)
 {
     return lhs -= rhs;
+}
+
+BigInteger& BigInteger::operator-=(const BigInteger& rhs) {
+    mpz_sub(mpz, mpz, rhs.mpz);
+    return *this;
 }
 
 BigInteger operator*(BigInteger lhs, const BigInteger& rhs)
@@ -47,9 +51,19 @@ BigInteger operator*(BigInteger lhs, const BigInteger& rhs)
     return lhs *= rhs;
 }
 
+BigInteger& BigInteger::operator*=(const BigInteger& rhs) {
+    mpz_mul(mpz, mpz, rhs.mpz);
+    return *this;
+}
+
 BigInteger operator/(BigInteger lhs, const BigInteger& rhs)
 {
     return lhs /= rhs;
+}
+
+BigInteger& BigInteger::operator/=(const BigInteger& rhs) {
+    mpz_tdiv_q(mpz, mpz, rhs.mpz);
+    return *this;
 }
 
 BigInteger operator%(BigInteger lhs, const BigInteger& rhs)
@@ -57,9 +71,15 @@ BigInteger operator%(BigInteger lhs, const BigInteger& rhs)
     return lhs %= rhs;
 }
 
+BigInteger& BigInteger::operator%=(const BigInteger& rhs) {
+    mpz_mod(mpz, mpz, rhs.mpz);
+    return *this;
+}
+
 BigInteger& BigInteger::operator++()
 {
-    return (*this) += 1;
+    mpz_add_ui(mpz, mpz, 1);
+    return (*this);
 }
 
 BigInteger BigInteger::operator++(int)
@@ -71,7 +91,8 @@ BigInteger BigInteger::operator++(int)
 
 BigInteger& BigInteger::operator--()
 {
-    return (*this) -= 1;
+    mpz_sub_ui(mpz, mpz, 1);
+    return (*this);
 }
 
 BigInteger BigInteger::operator--(int)
@@ -83,7 +104,11 @@ BigInteger BigInteger::operator--(int)
 
 bool BigInteger::operator!() const
 {
-    return digits.size() != 1 or digits[0] != 0;
+    return mpz_cmp_si(mpz, 0) == 0;
+}
+
+BigInteger::operator std::string() const {
+    return {mpz_get_str(nullptr, 10, mpz)};
 }
 
 }
