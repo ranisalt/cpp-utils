@@ -1,4 +1,4 @@
-#include "mbi.h"
+#include "biginteger.h"
 
 namespace my {
 

@@ -1,20 +1,20 @@
 #include <gtest/gtest.h>
-#include "mbi.h"
+#include "biginteger.h"
 
 using my::BigInteger;
 
-class mbi_test : public testing::Test {
+class biginteger_test : public testing::Test {
 public:
 	BigInteger bi;
 };
 
-TEST_F(mbi_test, isDefaultConstructedToZero) {
+TEST_F(biginteger_test, isDefaultConstructedToZero) {
     auto zero = BigInteger{0};
 
 	EXPECT_EQ(zero, bi);
 }
 
-TEST_F(mbi_test, equal) {
+TEST_F(biginteger_test, equal) {
     auto twenty = BigInteger{20};
     auto other_twenty = BigInteger{20};
     auto twenty_one = BigInteger{21};
@@ -23,7 +23,7 @@ TEST_F(mbi_test, equal) {
     EXPECT_FALSE(twenty == twenty_one);
 }
 
-TEST_F(mbi_test, different) {
+TEST_F(biginteger_test, different) {
     auto twenty = BigInteger{20};
     auto other_twenty = BigInteger{20};
     auto not_twenty = BigInteger{21};
@@ -32,42 +32,42 @@ TEST_F(mbi_test, different) {
     EXPECT_TRUE(twenty != not_twenty);
 }
 
-TEST_F(mbi_test, greaterThan) {
+TEST_F(biginteger_test, greaterThan) {
     auto twenty = BigInteger{20};
     auto twenty_one = BigInteger{21};
 
     EXPECT_TRUE(twenty_one > twenty);
 }
 
-TEST_F(mbi_test, lessThan) {
+TEST_F(biginteger_test, lessThan) {
     auto twenty = BigInteger{20};
     auto twenty_one = BigInteger{21};
 
     EXPECT_TRUE(twenty < twenty_one);
 }
 
-TEST_F(mbi_test, greaterThanOrEqual) {
+TEST_F(biginteger_test, greaterThanOrEqual) {
     auto twenty = BigInteger{20};
     auto twenty_one = BigInteger{21};
 
     EXPECT_TRUE(twenty_one >= twenty);
 }
 
-TEST_F(mbi_test, lessThanOrEqual) {
+TEST_F(biginteger_test, lessThanOrEqual) {
     auto twenty = BigInteger{20};
     auto twenty_one = BigInteger{21};
 
     EXPECT_TRUE(twenty <= twenty_one);
 }
 
-TEST_F(mbi_test, negate) {
+TEST_F(biginteger_test, negate) {
     auto twenty = BigInteger{20};
     auto minus_twenty = BigInteger{-20};
 
     EXPECT_EQ(minus_twenty, -twenty);
 }
 
-TEST_F(mbi_test, addition) {
+TEST_F(biginteger_test, addition) {
     auto twenty = BigInteger{20};
     auto fifty = BigInteger{50};
     auto seventy = BigInteger{70};
@@ -75,7 +75,7 @@ TEST_F(mbi_test, addition) {
     EXPECT_EQ(seventy, twenty + fifty);
 }
 
-TEST_F(mbi_test, subtraction) {
+TEST_F(biginteger_test, subtraction) {
     auto twenty = BigInteger{20};
     auto fifty = BigInteger{50};
     auto minus_thirty = BigInteger{-30};
@@ -85,7 +85,7 @@ TEST_F(mbi_test, subtraction) {
     EXPECT_EQ(thirty, fifty - twenty);
 }
 
-TEST_F(mbi_test, multiplication) {
+TEST_F(biginteger_test, multiplication) {
     auto twenty = BigInteger{20};
     auto fifty = BigInteger{50};
     auto thousand = BigInteger{1000};
@@ -93,7 +93,7 @@ TEST_F(mbi_test, multiplication) {
     EXPECT_EQ(thousand, twenty * fifty);
 }
 
-TEST_F(mbi_test, division) {
+TEST_F(biginteger_test, division) {
     auto twenty = BigInteger{20};
     auto fifty = BigInteger{50};
     auto thousand = BigInteger{1000};
@@ -101,7 +101,7 @@ TEST_F(mbi_test, division) {
     EXPECT_EQ(twenty, thousand / fifty);
 }
 
-TEST_F(mbi_test, modulus) {
+TEST_F(biginteger_test, modulus) {
     auto ten = BigInteger{10};
     auto twenty = BigInteger{20};
     auto fifty = BigInteger{50};
@@ -109,7 +109,7 @@ TEST_F(mbi_test, modulus) {
     EXPECT_EQ(ten, fifty % twenty);
 }
 
-TEST_F(mbi_test, increment) {
+TEST_F(biginteger_test, increment) {
     auto twenty = BigInteger{20};
     auto other_twenty = twenty;
     auto twenty_one = BigInteger{21};
@@ -121,7 +121,7 @@ TEST_F(mbi_test, increment) {
     EXPECT_EQ(twenty_two, twenty);
 }
 
-TEST_F(mbi_test, decrement) {
+TEST_F(biginteger_test, decrement) {
     auto twenty = BigInteger{20};
     auto other_twenty = twenty;
     auto nineteen = BigInteger{19};
@@ -133,7 +133,7 @@ TEST_F(mbi_test, decrement) {
     EXPECT_EQ(eighteen, twenty);
 }
 
-TEST_F(mbi_test, booleanCast) {
+TEST_F(biginteger_test, booleanCast) {
     auto zero = BigInteger{0};
     auto twenty = BigInteger{20};
 
@@ -141,7 +141,7 @@ TEST_F(mbi_test, booleanCast) {
     EXPECT_TRUE(!zero);
 }
 
-TEST_F(mbi_test, bitAnd) {
+TEST_F(biginteger_test, bitAnd) {
     auto twenty_one = BigInteger{21}; // 10101
     auto twenty_two = BigInteger{22}; // 10110
     auto twenty = BigInteger{20};     // 10100
@@ -149,7 +149,7 @@ TEST_F(mbi_test, bitAnd) {
     EXPECT_EQ(twenty, twenty_one & twenty_two);
 }
 
-TEST_F(mbi_test, bitOr) {
+TEST_F(biginteger_test, bitOr) {
     auto twenty_one = BigInteger{21};   // 10101
     auto twenty_two = BigInteger{22};   // 10110
     auto twenty_three = BigInteger{23}; // 10111
@@ -157,7 +157,7 @@ TEST_F(mbi_test, bitOr) {
     EXPECT_EQ(twenty_three, twenty_one | twenty_two);
 }
 
-TEST_F(mbi_test, bitXor) {
+TEST_F(biginteger_test, bitXor) {
     auto twenty_one = BigInteger{21}; // 10101
     auto twenty_two = BigInteger{22}; // 10110
     auto three = BigInteger{3};       // 00011
@@ -165,7 +165,7 @@ TEST_F(mbi_test, bitXor) {
     EXPECT_EQ(three, twenty_one ^ twenty_two);
 }
 
-TEST_F(mbi_test, bitComplement) {
+TEST_F(biginteger_test, bitComplement) {
     auto twenty = BigInteger{20};            // 10101
     auto minus_twenty_one = BigInteger{-21}; // 10101
 
