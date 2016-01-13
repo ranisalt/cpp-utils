@@ -172,6 +172,13 @@ TEST_F(biginteger_test, bitComplement) {
     EXPECT_EQ(minus_twenty_one, ~twenty);
 }
 
+TEST_F(biginteger_test, stringCasting) {
+    auto twenty = BigInteger{20};
+    auto twenty_str = std::string(twenty);
+
+    EXPECT_EQ("20", twenty_str);
+}
+
 int main(int argc, char** argv) {
 	testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();
