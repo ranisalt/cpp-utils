@@ -60,6 +60,37 @@ TEST_F(biginteger_test, lessThanOrEqual) {
     EXPECT_TRUE(twenty <= twenty_one);
 }
 
+TEST_F(biginteger_test, assignInt) {
+    auto twenty = BigInteger{20};
+    twenty = -20;
+
+    EXPECT_EQ(-20, twenty);
+}
+
+TEST_F(biginteger_test, assignCopy) {
+    auto twenty = BigInteger{20};
+    auto minus_twenty = BigInteger{-20};
+    twenty = minus_twenty;
+
+    EXPECT_EQ(minus_twenty, twenty);
+}
+
+TEST_F(biginteger_test, assignMove) {
+    auto twenty = BigInteger{20};
+    auto minus_twenty = BigInteger{-20};
+    twenty = std::move(minus_twenty);
+
+    EXPECT_EQ(-20, twenty);
+}
+
+TEST_F(biginteger_test, swap) {
+    auto twenty = BigInteger{20};
+    auto minus_twenty = BigInteger{-20};
+    std::swap(twenty, minus_twenty);
+
+    EXPECT_EQ(-20, twenty);
+}
+
 TEST_F(biginteger_test, negate) {
     auto twenty = BigInteger{20};
     auto minus_twenty = BigInteger{-20};
@@ -170,6 +201,20 @@ TEST_F(biginteger_test, bitComplement) {
     auto minus_twenty_one = BigInteger{-21}; // 10101
 
     EXPECT_EQ(minus_twenty_one, ~twenty);
+}
+
+TEST_F(biginteger_test, intCasting) {
+    auto twenty = BigInteger{20};
+    int twenty_int = static_cast<int>(twenty);
+
+    EXPECT_EQ(20, twenty_int);
+}
+
+TEST_F(biginteger_test, uintCasting) {
+    auto twenty = BigInteger{20};
+    int twenty_uint = static_cast<unsigned int>(twenty);
+
+    EXPECT_EQ(20, twenty_uint);
 }
 
 TEST_F(biginteger_test, stringCasting) {

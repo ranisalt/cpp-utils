@@ -12,8 +12,37 @@ BigInteger::BigInteger(const BigInteger& that)
     mpz_init_set(mpz, that.mpz);
 }
 
+BigInteger::BigInteger(BigInteger&& that)
+{
+    mpz_init(mpz);
+    swap(that);
+}
+
 BigInteger::~BigInteger() {
     mpz_clear(mpz);
+}
+
+void BigInteger::swap(BigInteger& that)
+{
+    mpz_swap(mpz, that.mpz);
+}
+
+BigInteger& BigInteger::operator=(const BigInteger& rhs)
+{
+    mpz_set(mpz, rhs.mpz);
+    return *this;
+}
+
+BigInteger& BigInteger::operator=(BigInteger&& rhs)
+{
+    swap(rhs);
+    return *this;
+}
+
+BigInteger& BigInteger::operator=(int32_t rhs)
+{
+    mpz_set_si(mpz, rhs);
+    return *this;
 }
 
 bool operator==(const BigInteger& lhs, const BigInteger& rhs)
@@ -177,9 +206,19 @@ BigInteger operator~(BigInteger that)
     return that;
 }
 
+BigInteger::operator int() const
+{
+    return mpz_get_si(mpz);
+}
+
+BigInteger::operator unsigned int() const
+{
+    return mpz_get_ui(mpz);
+}
+
 BigInteger::operator std::string() const
 {
-    return {mpz_get_str(nullptr, 10, mpz)};
+    return mpz_get_str(nullptr, 10, mpz);
 }
 
 }

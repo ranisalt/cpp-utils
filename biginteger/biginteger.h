@@ -16,7 +16,11 @@ public:
 
     BigInteger(const BigInteger& that);
 
+    BigInteger(BigInteger&& that);
+
     ~BigInteger();
+
+    void swap(BigInteger& that);
 
     // comparison
     friend bool operator==(const BigInteger& lhs, const BigInteger& rhs);
@@ -32,6 +36,12 @@ public:
     friend bool operator>=(const BigInteger& lhs, const BigInteger& rhs);
 
     // arithmetic
+    BigInteger& operator=(int32_t rhs);
+
+    BigInteger& operator=(const BigInteger& rhs);
+
+    BigInteger& operator=(BigInteger&& rhs);
+
     friend BigInteger operator-(BigInteger that);
 
     friend BigInteger operator+(BigInteger lhs, const BigInteger& rhs);
@@ -82,6 +92,10 @@ public:
     friend BigInteger operator~(BigInteger lhs);
 
     // conversion
+    explicit operator int() const;
+
+    explicit operator unsigned int() const;
+
     explicit operator std::string() const;
 
 private:
