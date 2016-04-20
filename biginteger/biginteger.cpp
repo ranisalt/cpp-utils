@@ -227,6 +227,11 @@ BigInteger::operator unsigned int() const
     return mpz_get_ui(mpz);
 }
 
+BigInteger::operator double() const
+{
+    return mpz_get_d(mpz);
+}
+
 BigInteger::operator std::string() const
 {
     return mpz_get_str(nullptr, 10, mpz);

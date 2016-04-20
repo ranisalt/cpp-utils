@@ -100,6 +100,8 @@ public:
 
     explicit operator unsigned int() const;
 
+    explicit operator double() const;
+
     explicit operator std::string() const;
 
 private:

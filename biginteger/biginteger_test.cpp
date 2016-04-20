@@ -224,6 +224,13 @@ TEST_F(biginteger_test, uintCasting) {
     EXPECT_EQ(20, twenty_uint);
 }
 
+TEST_F(biginteger_test, doubleCasting) {
+    auto twenty = BigInteger{20};
+    auto twenty_dbl = double(twenty);
+
+    EXPECT_DOUBLE_EQ(20.0, twenty_dbl);
+}
+
 TEST_F(biginteger_test, stringCasting) {
     auto twenty = BigInteger{20};
     auto twenty_str = std::string(twenty);
