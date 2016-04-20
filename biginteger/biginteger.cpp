@@ -136,6 +136,17 @@ BigInteger& BigInteger::operator%=(const BigInteger& rhs)
     return *this;
 }
 
+BigInteger pow(BigInteger base, unsigned long int iexp)
+{
+    return base.pow(iexp);
+}
+
+BigInteger& BigInteger::pow(unsigned long int iexp)
+{
+    mpz_pow_ui(mpz, mpz, iexp);
+    return *this;
+}
+
 BigInteger& BigInteger::operator++()
 {
     mpz_add_ui(mpz, mpz, 1);

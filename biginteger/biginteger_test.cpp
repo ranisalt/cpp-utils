@@ -140,6 +140,13 @@ TEST_F(biginteger_test, modulus) {
     EXPECT_EQ(ten, fifty % twenty);
 }
 
+TEST_F(biginteger_test, power) {
+    auto two = BigInteger{2};
+    auto one_mega = BigInteger{1048576};
+
+    EXPECT_EQ(one_mega, two.pow(20));
+}
+
 TEST_F(biginteger_test, increment) {
     auto twenty = BigInteger{20};
     auto other_twenty = twenty;

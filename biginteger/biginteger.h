@@ -64,6 +64,10 @@ public:
 
     BigInteger& operator%=(const BigInteger& rhs);
 
+    friend BigInteger pow(const BigInteger& base, unsigned long int iexp);
+
+    BigInteger& pow(unsigned long int iexp);
+
     // increment and decrement
     BigInteger& operator++();
 
