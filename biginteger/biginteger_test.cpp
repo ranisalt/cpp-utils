@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "biginteger.h"
 
-using my::BigInteger;
+using hoist::BigInteger;
 
 class biginteger_test : public testing::Test {
 public:

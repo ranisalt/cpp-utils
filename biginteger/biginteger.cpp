@@ -1,6 +1,6 @@
 #include "biginteger.h"
 
-namespace my {
+namespace hoist {
 
 BigInteger::BigInteger(int32_t value/* = 0*/)
 {

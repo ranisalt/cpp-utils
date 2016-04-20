@@ -6,7 +6,7 @@
 
 #include <gmp.h>
 
-namespace my {
+namespace hoist {
 
 class BigInteger {
 public:
