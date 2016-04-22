@@ -2,7 +2,12 @@
 #define LOCKFREE_STACK_H
 
 #include <array>
+
+#ifndef RACE_TEST
 #include <atomic>
+#else
+#include "relacy/relacy/relacy.hpp"
+#endif
 
 namespace hoist {
 namespace lockfree {
@@ -17,6 +22,10 @@ public:
 
     stack() = default;
 
+#ifdef RACE_TEST
+#define size_ size_($)
+#endif
+
     /* accessors */
     reference top() { return buffer[size_ - 1]; }
 
@@ -27,10 +36,16 @@ public:
 
     size_type size() const { return size_; }
 
-    /* modifiers */
-    void push(const value_type& value) { buffer[size_++] = value; }
+    constexpr size_type max_size() const { return Capacity; }
 
-    void push(value_type&& value) { buffer[size_++] = std::move(value); }
+    /* modifiers */
+    void push(const value_type& value) {
+        buffer[size_++] = value;
+    }
+
+    void push(value_type&& value) {
+        buffer[size_++] = std::move(value);
+    }
 
     template<class ...Args>
     void emplace(Args&& ...args) {
@@ -39,9 +54,17 @@ public:
 
     void pop() { std::move(buffer[--size_]); }
 
+#undef size_
+
 private:
+#ifndef RACE_TEST
+    using atomic_size = std::atomic<size_type>;
+#else
+    using atomic_size = rl::atomic<size_type>;
+#endif
+
     std::array<T, Capacity> buffer{};
-    std::atomic<size_type> size_{0};
+    atomic_size size_{0};
 };
 
 }
