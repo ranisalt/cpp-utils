@@ -214,6 +214,20 @@ TEST_F(biginteger_test, bitXor) {
     EXPECT_EQ(three, twenty_one ^ twenty_two);
 }
 
+TEST_F(biginteger_test, bitLeftShift) {
+    auto twenty_one = BigInteger{21};  // 10101
+    auto eighty_four = BigInteger{84}; // 1010100
+
+    EXPECT_EQ(eighty_four, twenty_one << 2);
+}
+
+TEST_F(biginteger_test, bitRightShift) {
+    auto twenty_one = BigInteger{21};  // 10101
+    auto five = BigInteger{5}; // 101
+
+    EXPECT_EQ(five, twenty_one >> 2);
+}
+
 TEST_F(biginteger_test, bitComplement) {
     auto twenty = BigInteger{20};            // 10101
     auto minus_twenty_one = BigInteger{-21}; // 10101

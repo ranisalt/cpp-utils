@@ -115,6 +115,14 @@ public:
 
     friend BigInteger operator~(BigInteger lhs);
 
+    friend BigInteger operator<<(BigInteger lhs, unsigned long int rhs);
+
+    BigInteger& operator<<=(unsigned long int rhs);
+
+    friend BigInteger operator>>(BigInteger lhs, unsigned long int rhs);
+
+    BigInteger& operator>>=(unsigned long int rhs);
+
     // conversion
     explicit operator int() const;
 

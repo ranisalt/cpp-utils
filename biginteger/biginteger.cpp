@@ -216,6 +216,28 @@ BigInteger operator~(BigInteger that)
     return that;
 }
 
+BigInteger operator<<(BigInteger lhs, unsigned long int rhs)
+{
+    return lhs <<= rhs;
+}
+
+BigInteger& BigInteger::operator<<=(unsigned long int rhs)
+{
+    auto base = BigInteger{2};
+    return operator*=(base.pow(rhs));
+}
+
+BigInteger operator>>(BigInteger lhs, unsigned long int rhs)
+{
+    return lhs >>= rhs;
+}
+
+BigInteger& BigInteger::operator>>=(unsigned long int rhs)
+{
+    auto base = BigInteger{2};
+    return operator/=(base.pow(rhs));
+}
+
 BigInteger::operator int() const
 {
     return mpz_get_si(mpz);
