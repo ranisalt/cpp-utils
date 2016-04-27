@@ -11,11 +11,13 @@
 namespace hoist {
 namespace statistics {
 
+#define NOT_ARITHMETIC "Iterable value type must be arithmetic"
+
 template<class InputIt>
 double arithmetic_mean(InputIt first, InputIt last)
 {
     using namespace std;
-    static_assert(is_arithmetic<decltype(*first + *last)>::value);
+    static_assert(is_arithmetic<decltype(*first + *last)>::value, NOT_ARITHMETIC);
 
     return accumulate(next(first), last, *first) /
         static_cast<double>(distance(first, last));
@@ -25,7 +27,7 @@ template<class InputIt>
 double median(InputIt first, InputIt last)
 {
     using namespace std;
-    static_assert(is_arithmetic<decltype(*first + *last)>::value);
+    static_assert(is_arithmetic<decltype(*first + *last)>::value, NOT_ARITHMETIC);
 
     auto sorted = vector<typename InputIt::value_type>(distance(first, last));
     partial_sort_copy(first, last, begin(sorted), end(sorted));
@@ -36,21 +38,10 @@ double median(InputIt first, InputIt last)
 }
 
 template<class InputIt>
-auto mode(InputIt first, InputIt last) -> typename InputIt::value_type
-{
-    using namespace std;
-
-    auto counter = map<typename InputIt::value_type, std::size_t>{};
-    while (first != last) {
-        ++counter[*first];
-    }
-}
-
-template<class InputIt>
 double standard_deviation(InputIt first, InputIt last)
 {
     using namespace std;
-    static_assert(is_arithmetic<decltype(*first + *last)>::value);
+    static_assert(is_arithmetic<decltype(*first + *last)>::value, NOT_ARITHMETIC);
 
     auto avg = arithmetic_mean(first, last);
 
@@ -60,6 +51,8 @@ double standard_deviation(InputIt first, InputIt last)
 
     return sqrt(arithmetic_mean(begin(sorted), end(sorted)));
 }
+
+#undef NOT_ARITHMETIC
 
 }
 }
