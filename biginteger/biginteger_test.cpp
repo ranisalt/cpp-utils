@@ -9,9 +9,14 @@ public:
 };
 
 TEST_F(biginteger_test, isDefaultConstructedToZero) {
-    auto zero = BigInteger{0};
+    auto zero_si = BigInteger{0l};
+    auto zero_ui = BigInteger{0ul};
+    auto zero_d = BigInteger{0.0};
 
-	EXPECT_EQ(zero, bi);
+	EXPECT_EQ(0, bi);
+	EXPECT_EQ(0, zero_si);
+	EXPECT_EQ(0, zero_ui);
+	EXPECT_EQ(0, zero_d);
 }
 
 TEST_F(biginteger_test, equal) {
@@ -60,10 +65,16 @@ TEST_F(biginteger_test, lessThanOrEqual) {
     EXPECT_TRUE(twenty <= twenty_one);
 }
 
-TEST_F(biginteger_test, assignInt) {
+TEST_F(biginteger_test, assignFundamental) {
     auto twenty = BigInteger{20};
-    twenty = -20;
 
+    twenty = -20;
+    EXPECT_EQ(-20, twenty);
+
+    twenty = 20;
+    EXPECT_EQ(20, twenty);
+
+    twenty = -20.0;
     EXPECT_EQ(-20, twenty);
 }
 

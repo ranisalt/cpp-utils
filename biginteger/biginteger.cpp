@@ -2,9 +2,14 @@
 
 namespace hoist {
 
-BigInteger::BigInteger(int32_t value/* = 0*/)
+BigInteger::BigInteger()
 {
-    mpz_init_set_si(mpz, value);
+    mpz_init(mpz);
+}
+
+BigInteger::BigInteger(double value)
+{
+    mpz_init_set_d(mpz, value);
 }
 
 BigInteger::BigInteger(const BigInteger& that)
@@ -36,12 +41,6 @@ BigInteger& BigInteger::operator=(const BigInteger& rhs)
 BigInteger& BigInteger::operator=(BigInteger&& rhs)
 {
     swap(rhs);
-    return *this;
-}
-
-BigInteger& BigInteger::operator=(int32_t rhs)
-{
-    mpz_set_si(mpz, rhs);
     return *this;
 }
 

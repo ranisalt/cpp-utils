@@ -1,8 +1,8 @@
 #ifndef UTILS_BIGINTEGER_H
 #define UTILS_BIGINTEGER_H
 
-#include <cstdint>
 #include <string>
+#include <type_traits>
 
 #include <gmp.h>
 
@@ -12,7 +12,29 @@ class BigInteger {
 public:
 
     // ctors and dtor
-    BigInteger(int32_t value = 0);
+    BigInteger();
+
+    template<class Int, typename std::enable_if<
+        std::is_fundamental<Int>::value &&
+        std::is_integral<Int>::value &&
+        std::is_signed<Int>::value,
+    Int>::type = 0>
+    BigInteger(Int value)
+    {
+        mpz_init_set_si(mpz, value);
+    }
+
+    template<class UInt, typename std::enable_if<
+        std::is_fundamental<UInt>::value &&
+        std::is_integral<UInt>::value &&
+        not std::is_signed<UInt>::value,
+    UInt>::type = 0>
+    BigInteger(UInt value)
+    {
+        mpz_init_set_ui(mpz, value);
+    }
+
+    BigInteger(double value);
 
     BigInteger(const BigInteger& that);
 
@@ -36,8 +58,6 @@ public:
     friend bool operator>=(const BigInteger& lhs, const BigInteger& rhs);
 
     // arithmetic
-    BigInteger& operator=(int32_t rhs);
-
     BigInteger& operator=(const BigInteger& rhs);
 
     BigInteger& operator=(BigInteger&& rhs);
