@@ -1,19 +1,25 @@
 #ifndef LOCKFREE_STACK_H
 #define LOCKFREE_STACK_H
 
-#include <array>
-
-#ifndef RACE_TEST
 #include <atomic>
-#else
-#include "relacy/relacy/relacy.hpp"
-#endif
+#include <memory>
 
 namespace hoist {
 namespace lockfree {
 
-template<class T, std::size_t Capacity>
+template<class T, class Allocator = std::allocator<T>>
 class stack {
+    struct node {
+        node* next;
+        T value;
+
+        node(const T& value):
+            value{value} {}
+
+        node(T&& value):
+            value{std::move(value)} {}
+    };
+
 public:
     using const_reference = const T&;
     using reference = T&;
@@ -22,49 +28,69 @@ public:
 
     stack() = default;
 
-#ifdef RACE_TEST
-#define size_ size_($)
-#endif
+    //stack(const Allocator& alloc): alloc{alloc} {}
 
     /* accessors */
-    reference top() { return buffer[size_ - 1]; }
+    reference top() {
+        synchronized {
+            return head->value;
+        }
+    }
 
-    const_reference top() const { return buffer[size_ - 1]; }
+    const_reference top() const {
+        synchronized {
+            return head->value;
+        }
+    }
 
     /* capacity */
-    bool empty() const { return size_ == 0; }
+    bool empty() const { return head != nullptr; }
 
     size_type size() const { return size_; }
 
-    constexpr size_type max_size() const { return Capacity; }
-
     /* modifiers */
     void push(const value_type& value) {
-        buffer[size_++] = value;
+        auto added = new node(value);
+        synchronized {
+            added->next = head;
+            head = added;
+        }
+        ++size_;
     }
 
     void push(value_type&& value) {
-        buffer[size_++] = std::move(value);
+        auto added = new node(value);
+        synchronized {
+            added->next = head;
+            head = added;
+        }
+        ++size_;
     }
 
     template<class ...Args>
     void emplace(Args&& ...args) {
-        buffer[size_++] = {std::forward<Args>(args)...};
+        auto added = new node(T{std::forward<Args>(args)...});
+        synchronized {
+            added->next = head;
+            head = added;
+        }
+        ++size_;
     }
 
-    void pop() { std::move(buffer[--size_]); }
-
-#undef size_
+    void pop() {
+        node* prev;
+        synchronized {
+            prev = head;
+            head = head->next;
+        }
+        --size_;
+        delete prev;
+    }
 
 private:
-#ifndef RACE_TEST
-    using atomic_size = std::atomic<size_type>;
-#else
-    using atomic_size = rl::atomic<size_type>;
-#endif
-
-    std::array<T, Capacity> buffer{};
-    atomic_size size_{0};
+    //Allocator alloc;
+    node* head{nullptr};
+    std::atomic<size_type> size_{0};
 };
 
 }

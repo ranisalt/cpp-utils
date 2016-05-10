@@ -15,16 +15,18 @@ struct Object
 {
     int id;
     const char* name;
+
+    Object(int id, const char* name): id{id}, name{name} {}
 };
 
 struct lockfree_race_test: public rl::test_suite<lockfree_race_test, thread_num>
 {
-    stack<Object, stack_size> lfstack;
+    stack<Object> s;
     std::atomic<int> finished{-1};
 
     void before() {
         for (auto i = 0; i < stack_size / 2; ++i) {
-            lfstack.emplace(i, "Test object");
+            s.emplace(i, "Test object");
         }
         ++finished;
     }
@@ -33,12 +35,12 @@ struct lockfree_race_test: public rl::test_suite<lockfree_race_test, thread_num>
         /* hold all threads until stack is filled */
         while (finished < 0);
         if (thread_idx & 1) {
-            lfstack.pop();
+            s.pop();
         } else {
             if (thread_idx & 2) {
-                lfstack.push({thread_idx, "Test object"});
+                s.push({thread_idx, "Test object"});
             } else {
-                lfstack.emplace(thread_idx, "Test object");
+                s.emplace(thread_idx, "Test object");
             }
         }
         ++finished;
@@ -47,7 +49,7 @@ struct lockfree_race_test: public rl::test_suite<lockfree_race_test, thread_num>
     void after() {
         /* hold thread until all finish */
         while (finished < thread_num);
-        RL_ASSERT(lfstack.size() == stack_size / 2);
+        RL_ASSERT(s.size() == stack_size / 2);
     }
 };
 

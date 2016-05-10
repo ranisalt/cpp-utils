@@ -19,7 +19,7 @@ class range {
 
         iterator operator++(int) {
             auto old = current;
-            this->operator++();
+            ++(*this);
             return {old, owner};
         }
 
