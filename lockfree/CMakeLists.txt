@@ -49,8 +49,8 @@ add_library(lfds_stack ${LFDS_STACK_SRC})
 target_link_libraries(lfds_freelist lfds)
 
 if(BUILD_TESTING)
-    add_executable(ringbuffer ${LFDS_RINGBUFFER_SRC} ringbuffer_test.cpp)
-    add_executable(stack ${LFDS_STACK_SRC} stack_test.cpp)
+    add_executable(ringbuffer ringbuffer_test.cpp)
+    add_executable(stack stack_test.cpp)
     target_link_libraries(ringbuffer lfds_ringbuffer gtest)
     target_link_libraries(stack lfds_stack gtest)
 
