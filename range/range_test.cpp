@@ -2,7 +2,7 @@
 #include <list>
 #include "range.h"
 
-using range = my::range;
+using range = hoist::range;
 
 struct range_test: public testing::Test {
 };

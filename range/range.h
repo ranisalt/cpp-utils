@@ -1,64 +1,52 @@
 #ifndef RANGE_H
 #define RANGE_H
 
-#include <algorithm>
-#include <iterator>
+#include <cstdint>
 
-namespace my {
+namespace hoist {
+
+class range;
+
+namespace detail {
+
+struct range_iterator: std::iterator_traits<std::intmax_t> {
+    range_iterator(std::intmax_t current, const range& owner)
+            :current{current}, owner{owner} { }
+
+    range_iterator& operator++();
+
+    range_iterator operator++(int);
+
+    std::intmax_t operator*() { return current; }
+
+    friend bool operator==(const range_iterator& lhs, const range_iterator& rhs);
+
+    friend bool operator!=(const range_iterator& lhs, const range_iterator& rhs);
+
+private:
+    std::intmax_t current;
+    const range& owner;
+};
+
+}
 
 class range {
-    struct iterator: std::iterator_traits<int> {
-        iterator(int current, const range& owner):
-            current{current}, owner{owner} {}
-
-        iterator& operator++() {
-            auto minmax = std::minmax(current + owner.step, owner.stop);
-            current = owner.step > 0 ? minmax.first : minmax.second;
-            return *this;
-        }
-
-        iterator operator++(int) {
-            auto old = current;
-            this->operator++();
-            return {old, owner};
-        }
-
-        int operator*() const {
-            return current;
-        }
-
-        friend bool operator==(const iterator& lhs, const iterator& rhs) {
-            return lhs.owner == rhs.owner and lhs.current == rhs.current;
-        }
-
-        friend bool operator!=(const iterator& lhs, const iterator& rhs) {
-            return not (lhs.current == rhs.current);
-        }
-
-    private:
-        int current;
-        const range& owner;
-    };
-
 public:
-    range(int stop): start{0}, stop{stop}, step{1} {}
-    range(int start, int stop, int step = 1):
-        start{start}, stop{stop}, step{step} {}
+    range(std::intmax_t stop) :start{0}, stop{stop}, step{1} { }
+    range(std::intmax_t start, std::intmax_t stop, std::intmax_t step = 1) :
+            start{start}, stop{stop}, step{step} { }
 
-    iterator begin() const {
-        return {start, *this};
-    }
+    detail::range_iterator begin() const;
 
-    iterator end() const {
-        return {stop, *this};
-    }
+    detail::range_iterator end() const;
 
-    friend bool operator==(const range& lhs, const range& rhs) {
+    friend bool operator==(const range& lhs, const range& rhs)
+    {
         return lhs.start == rhs.start and lhs.stop == rhs.stop and
-            lhs.step == rhs.step;
+                lhs.step == rhs.step;
     }
 
-    const int start, stop, step;
+    const std::intmax_t start, stop, step;
 };
 
 }
