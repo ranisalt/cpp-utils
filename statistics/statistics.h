@@ -20,7 +20,7 @@ double arithmetic_mean(InputIt first, InputIt last)
     using namespace std;
     static_assert(is_arithmetic<decltype(*first + *last)>::value, NOT_ARITHMETIC);
 
-    return std::accumulate(next(first), last, *first) /
+    return accumulate(next(first), last, *first) /
         static_cast<double>(distance(first, last));
 }
 

@@ -32,14 +32,8 @@ bool operator!=(const range_iterator& lhs, const range_iterator& rhs)
 
 }
 
-detail::range_iterator range::begin() const
-{
-    return {start, *this};
-}
+detail::range_iterator range::begin() const { return {start, *this}; }
 
-detail::range_iterator range::end() const
-{
-    return {stop, *this};
-}
+detail::range_iterator range::end() const { return {stop, *this}; }
 
 }

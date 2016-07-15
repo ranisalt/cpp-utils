@@ -1,5 +1,5 @@
-#ifndef UTILS_BIGINTEGER_H
-#define UTILS_BIGINTEGER_H
+#ifndef HOIST_BIGINTEGER_H
+#define HOIST_BIGINTEGER_H
 
 #include <string>
 #include <type_traits>
@@ -138,4 +138,4 @@ private:
 
 }
 
-#endif /* UTILS_BIGINTEGER_H */
+#endif /* HOIST_BIGINTEGER_H */

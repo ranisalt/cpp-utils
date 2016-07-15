@@ -10,8 +10,7 @@ class range;
 namespace detail {
 
 struct range_iterator: std::iterator_traits<std::intmax_t> {
-    range_iterator(std::intmax_t current, const range& owner)
-            :current{current}, owner{owner} { }
+    range_iterator(std::intmax_t current, const range& owner): current{current}, owner{owner} { }
 
     range_iterator& operator++();
 
@@ -32,8 +31,9 @@ private:
 
 class range {
 public:
-    range(std::intmax_t stop) :start{0}, stop{stop}, step{1} { }
-    range(std::intmax_t start, std::intmax_t stop, std::intmax_t step = 1) :
+    range(std::intmax_t stop): start{0}, stop{stop}, step{1} { }
+
+    range(std::intmax_t start, std::intmax_t stop, std::intmax_t step = 1):
             start{start}, stop{stop}, step{step} { }
 
     detail::range_iterator begin() const;

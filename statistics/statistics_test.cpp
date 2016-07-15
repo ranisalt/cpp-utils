@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <vector>
 #include "statistics.h"
 
 using namespace hoist::statistics;
