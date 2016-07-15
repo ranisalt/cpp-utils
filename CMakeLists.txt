@@ -10,5 +10,6 @@ if(BUILD_TESTING)
 endif()
 
 add_subdirectory(biginteger)
+add_subdirectory(lockfree)
 add_subdirectory(range)
 add_subdirectory(statistics)
