@@ -4,6 +4,6 @@
 [submodule "lockfree/liblfds"]
 	path = lockfree/liblfds
 	url = git@github.com:liblfds/liblfds.git
-[submodule "build/lockfree/relacy"]
-	path = build/lockfree/relacy
+[submodule "lockfree/relacy"]
+	path = lockfree/relacy
 	url = git@github.com:dvyukov/relacy.git
