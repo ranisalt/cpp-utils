@@ -24,9 +24,11 @@ public:
         lfds710_stack_init_valid_on_current_logical_core(ss, nullptr);
     }
 
+#ifndef HOIST_RELACY_TEST
     stack(const stack &) = delete;
 
     stack(stack &&) = delete;
+#endif
 
     virtual ~stack() {
         lfds710_stack_cleanup(ss, [](state *ss, lfds710_stack_element *se) {

@@ -14,9 +14,11 @@ class allocator {
 public:
     allocator() = default;
 
+#ifndef HOIST_RELACY_TEST
     allocator(const allocator &) = delete;
 
     allocator(allocator &&other) = delete;
+#endif
 
     template<class T>
     T *aligned_alloc(std::size_t a = atomic_isolation) {
