@@ -46,7 +46,7 @@ set(LFDS_STACK_SRC
     ${LFDS_SOURCE_DIR}/lfds710_stack/lfds710_stack_push.c
     ${LFDS_SOURCE_DIR}/lfds710_stack/lfds710_stack_query.c)
 add_library(lfds_stack ${LFDS_STACK_SRC})
-target_link_libraries(lfds_freelist lfds)
+target_link_libraries(lfds_stack lfds)
 
 if(BUILD_TESTING)
     add_executable(ringbuffer $<TARGET_OBJECTS:range> ringbuffer_test.cpp)
