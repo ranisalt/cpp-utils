@@ -31,6 +31,7 @@ public:
 
     ~ringbuffer()
     {
+        delete static_cast<value_type*>(ovr);
         lfds710_ringbuffer_cleanup(rs,
                 [](state* rs, void*, void* value, lfds710_misc_flag) {
                     delete static_cast<value_type*>(value);
@@ -53,12 +54,14 @@ public:
     void push(const value_type& value)
     {
         value_type* ptr = new value_type{value};
+        delete static_cast<value_type*>(ovr);
         lfds710_ringbuffer_write(rs, nullptr, ptr, &flag, nullptr, &ovr);
     }
 
     void push(value_type&& value)
     {
         value_type* ptr = new value_type{std::move(value)};
+        delete static_cast<value_type*>(ovr);
         lfds710_ringbuffer_write(rs, nullptr, ptr, &flag, nullptr, &ovr);
     }
 
@@ -66,6 +69,7 @@ public:
     void emplace(Args&& ... args)
     {
         value_type* ptr = new value_type{std::forward<Args>(args)...};
+        delete static_cast<value_type*>(ovr);
         lfds710_ringbuffer_write(rs, nullptr, ptr, &flag, nullptr, &ovr);
     }
 
